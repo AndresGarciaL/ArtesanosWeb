@@ -49,10 +49,19 @@ h3 {
 
 /* Estilos para titulo h2 */
 .h2 {
+    font-size: xxx-large;
     color: rgba(77, 80, 77, 0.5);
     text-align: center;
     padding-top: 3%;
     padding-bottom: 1%;
+}
+
+.h4{
+    font-size: x-large;
+    margin: 100px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
 
 p {
