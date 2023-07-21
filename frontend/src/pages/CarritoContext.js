@@ -50,6 +50,9 @@ export const CarritoProvider = ({ children }) => {
           icon: 'warning',
           title: 'Stock insuficiente',
           text: 'No hay suficiente stock disponible para agregar más productos.',
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
           confirmButtonText: 'OK',
         });
       }
@@ -90,8 +93,12 @@ export const CarritoProvider = ({ children }) => {
           icon: 'error',
           title: 'Producto eliminado',
           text: 'Se eliminó el producto del carrito de compras',
+          showConfirmButton: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
           confirmButtonText: 'OK',
         });
+
       }
     } else {
       setCarrito([...carrito, { ...producto, cantidad: 1 }]);
@@ -106,6 +113,10 @@ export const CarritoProvider = ({ children }) => {
       icon: 'error',
       title: 'Productos eliminados',
       text: 'Se eliminarón todos los productos del carrito de compras',
+      confirmButtonText: 'OK',
+      showConfirmButton: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
       confirmButtonText: 'OK',
     });
   };

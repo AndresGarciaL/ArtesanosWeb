@@ -6,6 +6,7 @@ import Breadcrumb from "../components/Breadcrumb";
 import { CarritoContext } from "./CarritoContext";
 import "../styles/Carrito.css";
 import Producto from "../components/Producto";
+import Compra from "./Compra";
 
 function Carrito() {
   const { productos, agregarAlCarrito } = useContext(CarritoContext);
@@ -49,7 +50,9 @@ function Carrito() {
               <span className="item-title-total">Total: </span>
               <span className="item-title-total">${calcularPrecioTotal()}</span>
             </div>
-            <button className="button-compra">Continuar compra</button>
+            <Link to="/Compra">
+              <button className="button-compra">Continuar compra</button>
+            </Link>
           </div>
         </div>
 
