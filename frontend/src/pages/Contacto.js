@@ -100,7 +100,7 @@ function Contacto() {
         </p>
       </div>
       <p id="correo">
-        <b>Correo electrónico:</b> artesanos@gmail.com
+        <b>Correo electrónico:</b> artesanosweb@gmail.com
       </p>
       <Footer />
     </>

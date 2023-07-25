@@ -15,7 +15,7 @@
 
 
 /* Estilos para Finalizacion */
-h2 {
+.h2-finalizacion {
     color: rgba(77, 80, 77, 0.5) !important;
     text-align: center;
     padding-bottom: 2%;
@@ -25,7 +25,7 @@ h2 {
     padding-bottom: 2.5%;
 }
 
-h3 {
+.finalizacion-h3 {
     color: #82C294 !important;
     text-align: center;
 }
@@ -52,7 +52,7 @@ p {
 }
 
 /* Estilos para resumen de compra */
-.left{
+.left-finalizacion{
     display: flex;
     background-color: #82C294;
     border-radius: 5px;

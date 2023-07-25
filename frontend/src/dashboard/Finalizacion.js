@@ -78,9 +78,9 @@ function Finalizacion() {
           src={require("./finalizacion/comprobado.png")}
           alt="Finalizacion"
         />
-        <h2>¡Gracias por tu compra!</h2>
+        <h2 className='h2-finalizacion'>¡Gracias por tu compra!</h2>
         <div className="compra-recibida">
-          <h3>Tu solicitud de compra fue recibida</h3>
+          <h3 className='finalizacion-h3' >Tu solicitud de compra fue recibida</h3>
           <p>
             Tu pedido se encuentra en proceso de validación, en breve recibirás un
             correo con el detalle de tu compra
@@ -88,7 +88,7 @@ function Finalizacion() {
         </div>
 
         {/* Display the cart items in the table */}
-        <div className="left">
+        <div className="left-finalizacion">
           <h2 id="h2-resumen">Resumen de Compra</h2>
           <table style={{ border: "1px solid black", padding: "8px" }}>
             <thead>

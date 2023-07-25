@@ -98,8 +98,8 @@
   }
   
   .one img {
-    width: 85%;
-    height: 100%;
+    width: 70%;
+    height: 80%;
     transition: 0.5s;
     object-fit: cover;
     border-radius: 10px;
@@ -113,8 +113,8 @@
   }
   
   .two img {
-    width: 75%;
-    height: 100%;
+    width: 55%;
+    height: 80%;
     transition: 0.5s;
     object-fit: cover;
     border-radius: 10px;
@@ -133,12 +133,12 @@
     position: relative;
     display: inline-block;
     overflow: hidden;
-    height: 45%;
+    height: 35%;
   }
   
   .three-one img {
     height: 100%;
-    width: 270px;
+    width: 210px;
     object-fit: cover;
     transition: 0.5s;
     border-radius: 10px;
@@ -148,12 +148,12 @@
     position: relative;
     display: inline-block;
     overflow: hidden;
-    height: 45%;
+    height: 35%;
   }
   
   .three-two img {
     height: 100%;
-    width: 270px;
+    width: 210px;
     object-fit: cover;
     transition: 0.5s;
     border-radius: 10px;   
@@ -164,8 +164,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 85%;
-    height: 100%;
+    width: 70%;
+    height: 80%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -186,8 +186,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 75%;
-    height: 100%;
+    width: 55%;
+    height: 80%;
     display: flex;
     align-items: center;
     justify-content: center;
