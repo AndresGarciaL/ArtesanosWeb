@@ -8,11 +8,11 @@ import Footer from "../components/Footer";
 import swal from "sweetalert";
 
 function Agregar_Categoria() {
-  const mostrarAlerta = () => {
+  const mostrarAlerta = (title, text, icon) => {
     swal({
-      title: "Categoria Agregada con Éxito",
-      text: "¡Recargue la pagina para ver los cambios!",
-      icon: "success",
+      title,
+      text,
+      icon,
       button: "Aceptar",
       timer: 5000,
     });
@@ -23,6 +23,11 @@ function Agregar_Categoria() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (nombre.trim() === "") {
+      mostrarAlerta("Error", "Por favor, rellene el campo del nombre de la categoría", "error");
+      return;
+    }
 
     axios
       .post("http://localhost:8081/addcategorias", { nombre })
@@ -62,6 +67,7 @@ function Agregar_Categoria() {
                   placeholder="Nombre de la categoría"
                   value={nombre}
                   onChange={handleChange}
+                  required
                 />
                 <button
                   type="submit"
@@ -70,7 +76,6 @@ function Agregar_Categoria() {
                     margin: "20px auto",
                     fontSize: "18px",
                   }}
-                  onClick={() => mostrarAlerta()}
                 >
                   Agregar
                 </button>

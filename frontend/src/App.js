@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CarritoProvider } from "./pages/CarritoContext";
+
 import Inicio from "./pages/Inicio";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -21,12 +21,14 @@ import Agregar_Producto from "./dashboard/Agregar_Producto";
 import Compra from "./pages/Compra";
 import Usuarios_Dash from "./dashboard/Usuarios_Dash";
 import Agregar_Usuario from "./dashboard/Agregar_Usuario";
+import Pedidos_Dash from "./dashboard/Pedidos_Dash";
+import Finalizacion from "./dashboard/Finalizacion";
 
 
 
 function App() {
   return (
-    <CarritoProvider>
+    
       <Router>
         <Routes>
           <Route path="/" element={<Inicio />} />
@@ -41,6 +43,7 @@ function App() {
           <Route path="/categorias/:id" element={<Categorias />} />
           <Route path="/Carrito" element={<Carrito />} />
           <Route path="/Compra" element={<Compra />} />
+          <Route path="/Finalizacion" element={<Finalizacion />} />
 
             <Route path="/Artesanos" element={<Artesanos />} />
             <Route path="/Conocenos" element={<Conocenos />} />
@@ -78,10 +81,15 @@ function App() {
             <Route path="/Dashboard/AgregarUsuario" element={<Agregar_Usuario/>}/>
           </Route>
 
+          <Route element={<PrivateRoute roles={[1]}/>}>
+            <Route path="/Dashboard/Pedidos" element={<Pedidos_Dash/>}/>
+          </Route>
+
+
           </Routes>
         </Router>
       
-    </CarritoProvider>
+   
   );
 }
 

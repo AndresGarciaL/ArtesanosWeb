@@ -134,3 +134,9 @@
     display: none;
   }
 }
+
+
+.btn-detalles{
+  margin: 10px;
+    width: 130px;
+}

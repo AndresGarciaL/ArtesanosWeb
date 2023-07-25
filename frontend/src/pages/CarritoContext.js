@@ -1,7 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-import "../styles/Carrito.css";
 import Swal from 'sweetalert2';
+import { UserContext } from "../components/UserContext";
 
 export const CarritoContext = createContext();
 
@@ -9,8 +9,10 @@ export const CarritoProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
   const [carrito, setCarrito] = useState([]);
 
+  const { usuario } = useContext(UserContext); // Get the logged-in user from UserContext
+
   useEffect(() => {
-    // Obtener productos de la base de datos
+    // Fetch products from the database
     axios
       .get("http://localhost:8081/productos")
       .then((response) => {
@@ -20,32 +22,34 @@ export const CarritoProvider = ({ children }) => {
         console.error("Error al obtener los productos:", error);
       });
 
-    // Obtener carrito del almacenamiento local
-    const carritoGuardado = localStorage.getItem("carrito");
-    if (carritoGuardado) {
-      setCarrito(JSON.parse(carritoGuardado));
+    // Get the shopping cart of the logged-in user from local storage on component load
+    if (usuario) {
+      const carritoGuardado = localStorage.getItem(`carrito_${usuario.id}`);
+      if (carritoGuardado) {
+        setCarrito(JSON.parse(carritoGuardado));
+      }
     }
-  }, []);
+  }, [usuario]); // The 'usuario' dependency ensures the cart is loaded when the user changes
 
-  useEffect(() => {
-    // Guardar carrito en el almacenamiento local
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-  }, [carrito]);
+  const guardarCarritoEnLocalStorage = (carritoActual) => {
+    if (usuario) {
+      localStorage.setItem(`carrito_${usuario.id}`, JSON.stringify(carritoActual));
+    }
+  };
 
-  //Añadir productos cantidad y mostrar alerta
   const agregarAlCarrito = (producto) => {
     const productoEnCarrito = carrito.find((item) => item.id === producto.id);
     const stockDisponible = producto.stock;
 
     if (productoEnCarrito) {
       if (productoEnCarrito.cantidad < stockDisponible) {
-        // Aumentar la cantidad en el carrito
+        // Increase the quantity in the cart
         const nuevoCarrito = carrito.map((item) =>
           item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item
         );
         setCarrito(nuevoCarrito);
       } else {
-        // Mostrar alerta de advertencia
+        // Show warning alert if stock is insufficient
         Swal.fire({
           icon: 'warning',
           title: 'Stock insuficiente',
@@ -58,10 +62,10 @@ export const CarritoProvider = ({ children }) => {
       }
     } else {
       if (1 <= stockDisponible) {
-        // Agregar el producto al carrito
+        // Add the product to the cart
         setCarrito([...carrito, { ...producto, cantidad: 1 }]);
       } else {
-        // Mostrar alerta de advertencia
+        // Show warning alert if stock is insufficient
         Swal.fire({
           icon: 'warning',
           title: 'Stock insuficiente',
@@ -72,23 +76,21 @@ export const CarritoProvider = ({ children }) => {
     }
   };
 
-
-  //Eliminar productos cantidad
   const eliminarDelCarrito = (producto) => {
     const productoEnCarrito = carrito.find((item) => item.id === producto.id);
     if (productoEnCarrito) {
-      // Verificar si la cantidad actual es mayor a 1 antes de restar
+      // Check if the current quantity is greater than 1 before subtracting
       if (productoEnCarrito.cantidad > 1) {
         const nuevoCarrito = carrito.map((item) =>
           item.id === producto.id ? { ...item, cantidad: item.cantidad - 1 } : item
         );
         setCarrito(nuevoCarrito);
       } else {
-        // Eliminar el producto del carrito si la cantidad es 1
+        // Remove the product from the cart if the quantity is 1
         const nuevoCarrito = carrito.filter((item) => item.id !== producto.id);
         setCarrito(nuevoCarrito);
 
-        // Mostrar alerta de advertencia si la cantidad llega a 0
+        // Show error alert if the quantity reaches 0
         Swal.fire({
           icon: 'error',
           title: 'Producto eliminado',
@@ -105,22 +107,24 @@ export const CarritoProvider = ({ children }) => {
     }
   };
 
-  //Eliminar todos los productos del carrito
   const eliminarTotalDelCarrito = (producto) => {
     const nuevoCarrito = carrito.filter((item) => item.id !== producto.id);
     setCarrito(nuevoCarrito);
     Swal.fire({
       icon: 'error',
       title: 'Productos eliminados',
-      text: 'Se eliminarón todos los productos del carrito de compras',
+      text: 'Se eliminaron todos los productos del carrito de compras',
       confirmButtonText: 'OK',
       showConfirmButton: true,
       allowOutsideClick: false,
       allowEscapeKey: false,
-      confirmButtonText: 'OK',
     });
   };
 
+  // Save the shopping cart to local storage whenever it changes
+  useEffect(() => {
+    guardarCarritoEnLocalStorage(carrito);
+  }, [carrito]);
 
   return (
     <CarritoContext.Provider

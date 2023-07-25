@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+* {
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    font-family: 'poppins', sans-serif;
+    font-size: small;
+
+}
+
+#hr {
+    margin: 2px;
+}
+
+
+/* Estilos para Finalizacion */
+h2 {
+    color: rgba(77, 80, 77, 0.5) !important;
+    text-align: center;
+    padding-bottom: 2%;
+}
+
+#h2-resumen{
+    padding-bottom: 2.5%;
+}
+
+h3 {
+    color: #82C294 !important;
+    text-align: center;
+}
+
+.compra-recibida{
+    padding: 2% 0;
+}
+
+#comprobado {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 250px;
+}
+
+p {
+    text-align: center;
+}
+
+#pedido {
+    font-weight: bold;
+    text-align: center;
+    color: black !important;
+}
+
+/* Estilos para resumen de compra */
+.left{
+    display: flex;
+    background-color: #82C294;
+    border-radius: 5px;
+    padding: 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+    padding: 2%;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* Imgs */
+.imgs {
+    display: flex;
+    justify-content: space-between;
+}
+
+#venta {
+    margin-left: 13%;
+    width: 50px;
+    height: 50px;
+}
+
+#servicio {
+    width: 50px;
+    height: 50px;
+}
+
+#cooperacion {
+    margin-right: 14%;
+    width: 50px;
+    height: 50px;
+}
+
+/* PREGUNTAS */
+.preguntas {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.preguntas2 {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+#titulo1 {
+    margin-left: 13% !important;
+}
+
+#titulo3 {
+    margin-right: 13%;
+}
+
+#campo-valor1 {
+    margin-left: 11%;
+    margin-right: 1%;
+}
+
+#negrita{
+    color: rgb(88, 88, 88);
+}
+
+#negrita2{
+    text-transform: uppercase;
+    color: rgb(88, 88, 88);
+}
+
+.parrafos {
+    align-items: center;
+    text-align: left;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-right: 7%;
+}
+
+.parrafo1 {
+    display: block;
+    text-align: right;
+}
+
+/* Estilos para Footer */
+footer {
+    background-color: rgb(88, 88, 88);
+    color: white;
+    padding: 30px 0;
+    margin-top: 30px;
+    text-align: center;
+    text-decoration: none;
+}

@@ -8,11 +8,11 @@ import Footer from "../components/Footer";
 import swal from "sweetalert";
 
 function Agregar_Usuario() {
-  const mostrarAlerta = () => {
+  const mostrarAlerta = (title, text, icon) => {
     swal({
-      title: "Usuario Agregado con Éxito",
-      text: "¡Vaya a la página de usuarios para ver los cambios!",
-      icon: "success",
+      title,
+      text,
+      icon,
       button: "Aceptar",
       timer: 5000,
     });
@@ -24,9 +24,9 @@ function Agregar_Usuario() {
   const [contrasena, setContrasena] = useState("");
   const [direccion, setDireccion] = useState("");
   const [rolId, setRolId] = useState("");
-  const [estatus, setEstatus] = useState("");
   const [roles, setRoles] = useState([]);
   const navegacion = useNavigate();
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     // Obtener las categorías de la base de datos al cargar el componente
@@ -42,25 +42,31 @@ function Agregar_Usuario() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8081/addusuarios", {
-        nombre,
-        apellidos,
-        email,
-        contrasena,
-        direccion,
-        rol_id: rolId, // Assign the selected role ID to the user
-        estatus,
-      })
-      .then((response) => {
-        console.log("Usuario agregado correctamente");
-        navegacion("/Dashboard/Usuarios"); // Redirigir
-        limpiarFormulario(); // Restablecer los valores del formulario
-        mostrarAlerta();
-      })
-      .catch((error) => {
-        console.error("Error al agregar el usuario:", error);
-      });
+
+    // Check for empty required fields
+    if (!nombre || !apellidos || !email || !contrasena || !direccion || !rolId ) {
+      mostrarAlerta("Error", "Por favor, rellene todos los campos del formulario", "error");
+    } else {
+      axios
+        .post("http://localhost:8081/addusuarios", {
+          nombre,
+          apellidos,
+          email,
+          contrasena,
+          direccion,
+          rol_id: rolId, // Assign the selected role ID to the user
+       
+        })
+        .then((response) => {
+          console.log("Usuario agregado correctamente");
+          navegacion("/Dashboard/Usuarios"); // Redirigir
+          limpiarFormulario(); // Restablecer los valores del formulario
+          mostrarAlerta('Éxito', 'Se agregó correctamente el Usuario .', 'success', 3000);
+        })
+        .catch((error) => {
+          console.error("Error al agregar el usuario:", error);
+        });
+    }
   };
 
   const handleChange = (e) => {
@@ -76,9 +82,7 @@ function Agregar_Usuario() {
       setDireccion(e.target.value);
     } else if (e.target.name === "rolId") {
       setRolId(e.target.value);
-    } else if (e.target.name === "estatus") {
-      setEstatus(e.target.value);
-    }
+    } 
   };
 
   const limpiarFormulario = () => {
@@ -88,7 +92,6 @@ function Agregar_Usuario() {
     setContrasena("");
     setDireccion("");
     setRolId("");
-    setEstatus("");
   };
 
   return (
@@ -108,6 +111,7 @@ function Agregar_Usuario() {
             </div>
             <div className="cat-nombres">
               <form onSubmit={handleSubmit}>
+                {formError && <p className="error-message">{formError}</p>}
                 <input
                   type="text"
                   name="nombre"
@@ -156,13 +160,7 @@ function Agregar_Usuario() {
                     </option>
                   ))}
                 </select>
-                <input
-                  type="text"
-                  name="estatus"
-                  placeholder="Estatus del Usuario"
-                  value={estatus}
-                  onChange={handleChange}
-                />
+               
                 <button
                   type="submit"
                   style={{

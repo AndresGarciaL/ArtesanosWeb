@@ -49,7 +49,13 @@ function SideBar_Dash() {
                 </Link>
               </li>
               <li className="menu-item">
-                <Link to="/pedidos">PEDIDOS</Link>
+                <Link to="/Dashboard/Pedidos">
+                <img
+                    className="img"
+                    src={require(`./icons/pedidos.png`)}
+                    alt=""
+                  />
+                  PEDIDOS</Link>
               </li>
               <li className="menu-item">
               <Link to="/Dashboard/Usuarios">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./styles/Usuarios_Dash.css";
 import { useParams } from "react-router-dom";
@@ -9,23 +9,6 @@ import Footer from "../components/Footer";
 import swal from "sweetalert";
 
 function Usuarios_Dash() {
-  const mostrarAlertaDel = (id) => {
-    swal({
-      title: "¿Estás seguro que deseas eliminar?",
-      text: "Esta acción es irreversible",
-      icon: "warning",
-      buttons: ["Cancelar", "Aceptar"],
-      dangerMode: true,
-    }).then((confirm) => {
-      if (confirm) {
-        swal("¡Confirmado!", "Usuario eliminado con éxito", "success");
-        handleDelete(id);
-      } else {
-        swal("Cancelado", "La acción fue cancelada", "error");
-      }
-    });
-  };
-
   const { id } = useParams();
   const [usuarios, setUsuarios] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
@@ -39,6 +22,9 @@ function Usuarios_Dash() {
     estatus: "",
   });
 
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get("http://localhost:8081/usuarios")
@@ -48,17 +34,33 @@ function Usuarios_Dash() {
       .catch((error) => {
         console.error("Error al obtener los usuarios:", error);
       });
+
+    // Get the currently logged-in user
+    axios
+      .get("http://localhost:8081/UsuarioActual")
+      .then((response) => {
+        setLoggedInUser(response.data.Resultado);
+      })
+      .catch((error) => {
+        console.error("Error al obtener el usuario actual:", error);
+      });
   }, [id]);
 
   const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:8081/delusuario/${id}`)
-      .then((response) => {
-        setUsuarios(usuarios.filter((usuario) => usuario.id !== id));
-      })
-      .catch((error) => {
-        console.error("Error al eliminar el usuario:", error);
+    if (loggedInUser && loggedInUser.id === id) {
+      axios.post("http://localhost:8081/logout").then(() => {
+        navigate("/login");
       });
+    } else {
+      axios
+        .delete(`http://localhost:8081/delusuario/${id}`)
+        .then((response) => {
+          setUsuarios(usuarios.filter((usuario) => usuario.id !== id));
+        })
+        .catch((error) => {
+          console.error("Error al eliminar el usuario:", error);
+        });
+    }
   };
 
   const handleEditStart = (id, nombre, apellidos, email, contrasena, direccion, rol_id, estatus) => {
@@ -76,7 +78,6 @@ function Usuarios_Dash() {
 
   const handleEditCancel = () => {
     setEditingUserId(null);
-    // Reset the edited user data when canceling
     setEditedUserData({
       nombre: "",
       apellidos: "",
@@ -89,7 +90,6 @@ function Usuarios_Dash() {
   };
 
   const handleEditSave = (id) => {
-    // Update the user data for the specific user with the provided id
     const updatedUsuarios = usuarios.map((usuario) => {
       if (usuario.id === id) {
         return {
@@ -117,6 +117,23 @@ function Usuarios_Dash() {
     } else if (event.key === "Escape") {
       handleEditCancel();
     }
+  };
+
+  const mostrarAlertaDel = (id) => {
+    swal({
+      title: "¿Estás seguro que deseas eliminar?",
+      text: "Esta acción es irreversible",
+      icon: "warning",
+      buttons: ["Cancelar", "Aceptar"],
+      dangerMode: true,
+    }).then((confirm) => {
+      if (confirm) {
+        swal("¡Confirmado!", "Usuario eliminado con éxito", "success");
+        handleDelete(id);
+      } else {
+        swal("Cancelado", "La acción fue cancelada", "error");
+      }
+    });
   };
 
   return (

@@ -1,89 +1,100 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./styles/Categorias_Dash.css";
-import SideBar_Dash from "./SideBar_Dash";
-import Header_Dash from "./Header_Dash";
-import Footer from "../components/Footer";
-import swal from "sweetalert";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './styles/Categorias_Dash.css';
+import SideBar_Dash from './SideBar_Dash';
+import Header_Dash from './Header_Dash';
+import Footer from '../components/Footer';
+import swal from 'sweetalert';
 
 function Agregar_Producto() {
-  const mostrarAlerta = () => {
-    swal({
-      title: "Producto Agregado con Éxito",
-      text: "¡Vaya a la pagina de productos para ver los cambios!",
-      icon: "success",
-      button: "Aceptar",
-      timer: 5000,
-    });
+  const mostrarAlerta = (title, text, icon, timer) => {
+    swal({ title, text, icon, button: 'Aceptar', timer });
   };
 
-  const [categoria, setCategoria] = useState("");
+  const [categoria, setCategoria] = useState('');
   const [categorias, setCategorias] = useState([]);
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [precio, setPrecio] = useState("");
-  const [stock, setStock] = useState("");
-  const [image, setImage] = useState("");
+  const [nombre, setNombre] = useState('');
+  const [descripcion, setDescripcion] = useState('');
+  const [precio, setPrecio] = useState('');
+  const [stock, setStock] = useState('');
+  const [image, setImage] = useState(null); // Use null for image state
+  const [formSubmitted, setFormSubmitted] = useState(false); // Track form submission
+
   const navegacion = useNavigate();
 
   useEffect(() => {
     // Obtener las categorías de la base de datos al cargar el componente
     axios
-      .get("http://localhost:8081/categorias")
+      .get('http://localhost:8081/categorias')
       .then((response) => {
         setCategorias(response.data);
       })
       .catch((error) => {
-        console.error("Error al obtener las categorías:", error);
+        console.error('Error al obtener las categorías:', error);
       });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8081/addproducto", {
-        nombre,
-        descripcion,
-        precio,
-        stock,
-        categoria,
-        image,
-      })
-      .then((response) => {
-        console.log("Producto agregado correctamente");
-        navegacion.push("/Dashboard/Categorias"); // Redirigir
-        limpiarFormulario(); // Restablecer los valores del formulario
-      })
-      .catch((error) => {
-        console.error("Error al agregar el producto:", error);
-      });
-  };
+    // Validate form fields
+    if (!nombre || !descripcion || !precio || !stock || !categoria || !image) {
+      mostrarAlerta('Error', 'Complete todos los campos del formulario.', 'error', 3000);
+      return;
+    }
 
-  const handleChange = (e) => {
-    if (e.target.name === "nombre") {
-      setNombre(e.target.value);
-    } else if (e.target.name === "descripcion") {
-      setDescripcion(e.target.value);
-    } else if (e.target.name === "precio") {
-      setPrecio(e.target.value);
-    } else if (e.target.name === "stock") {
-      setStock(e.target.value);
-    } else if (e.target.name === "categoria") {
-      setCategoria(e.target.value);
-    } else if (e.target.name === "image") {
-      setImage(e.target.value);
+    try {
+      // Create a new FormData object to handle image file
+      const formData = new FormData();
+      formData.append('nombre', nombre);
+      formData.append('descripcion', descripcion);
+      formData.append('precio', precio);
+      formData.append('stock', stock);
+      formData.append('categoria', categoria);
+      formData.append('image', image); // Append the image file to the FormData object
+
+      // Send the form data to the server with axios
+      const response = await axios.post('http://localhost:8081/addproducto', formData);
+      mostrarAlerta('Éxito', 'Se agregó el producto correctamente.', 'success', 3000);
+      console.log('Producto agregado correctamente');
+      limpiarFormulario(); // Restablecer los valores del formulario
+      setFormSubmitted(false); // Set formSubmitted to true to show success alert
+    } catch (error) {
+      console.error('Error al agregar el producto:', error);
+      mostrarAlerta('Error', 'Hubo un problema al agregar el producto.', 'error', 3000);
     }
   };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
 
-  const limpiarFormulario = () => {
-    setNombre("");
-    setDescripcion("");
-    setPrecio("");
-    setStock("");
-    setCategoria("");
-    setImage("");
+    // Check if a file was selected
+    if (file) {
+      setImage(file);
+    } else {
+      // If no file was selected (e.g., user cancels the selection), reset the image state to null
+      setImage(null);
+    }
   };
+  const limpiarFormulario = () => {
+    setNombre('');
+    setDescripcion('');
+    setPrecio('');
+    setStock('');
+    setCategoria('');
+    setImage(null); // Set image state to null to remove the selected image
+  };
+
+  useEffect(() => {
+    if (formSubmitted) {
+      mostrarAlerta(
+        'Producto Agregado con Éxito',
+        '¡Vaya a la pagina de productos para ver los cambios!',
+        'success',
+        5000
+      );
+      setFormSubmitted(true); // Reset formSubmitted to false after showing the alert
+    }
+  }, [formSubmitted]);
 
   return (
     <>
@@ -96,9 +107,7 @@ function Agregar_Producto() {
           </div>
           <section className="dash-cat">
             <div className="title-cat-dash">
-              <h1 style={{ fontSize: "24px", textAlign: "center" }}>
-                Agregar Producto
-              </h1>
+              <h1 style={{ fontSize: '24px', textAlign: 'center' }}>Agregar Producto</h1>
             </div>
             <div className="cat-nombres">
               <form onSubmit={handleSubmit}>
@@ -107,35 +116,35 @@ function Agregar_Producto() {
                   name="nombre"
                   placeholder="Nombre del Producto"
                   value={nombre}
-                  onChange={handleChange}
+                  onChange={(e) => setNombre(e.target.value)}
                 />
                 <input
                   type="text"
                   name="descripcion"
                   placeholder="Descripcion Producto"
                   value={descripcion}
-                  onChange={handleChange}
+                  onChange={(e) => setDescripcion(e.target.value)}
                 />
                 <input
-                  type="text"
+                 min={1}
+                 max={50000}
+                  type="number"
                   name="precio"
                   placeholder="Precio Producto"
                   value={precio}
-                  onChange={handleChange}
+                  onChange={(e) => setPrecio(e.target.value)}
                 />
                 <input
-                  type="text"
+               min={1}
+               max={50000}
+                  type="number"
+                  readonly
                   name="stock"
                   placeholder="Stock producto"
                   value={stock}
-                  onChange={handleChange}
+                  onChange={(e) => setStock(e.target.value)}
                 />
-                <select
-                  name="categoria"
-                  id="categoria"
-                  onChange={handleChange}
-                  required
-                >
+                <select name="categoria" id="categoria" onChange={(e) => setCategoria(e.target.value)} required>
                   <option value="">Seleccione una categoría</option>
                   {categorias.map((cat) => (
                     <option key={cat.id} value={cat.id}>
@@ -143,21 +152,14 @@ function Agregar_Producto() {
                     </option>
                   ))}
                 </select>
-                <input
-                  type="text"
-                  name="image"
-                  placeholder="nombre de imagen.extension"
-                  value={image}
-                  onChange={handleChange}
-                />
+                <input type="file" name="image" onChange={handleImageChange} accept="image/*" />
                 <button
                   type="submit"
                   style={{
-                    display: "block",
-                    margin: "20px auto",
-                    fontSize: "18px",
+                    display: 'block',
+                    margin: '20px auto',
+                    fontSize: '18px',
                   }}
-                  onClick={() => mostrarAlerta()}
                 >
                   Agregar
                 </button>

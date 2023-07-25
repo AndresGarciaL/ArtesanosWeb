@@ -32,12 +32,12 @@ function Artesanos() {
         </ol>
       </nav>
             <h2 className='h2'>CONOZCA A NUESTROS SOCIOS ARTESANOS</h2>
-            <h4 className='h4'>No somos solo una simple tienda online de productos de arte; somos un grupo de personas que trabajamos mano a
+            <p>No somos solo una simple tienda online de productos de arte; somos un grupo de personas que trabajamos mano a
                 mano con artesanos para que podamos ayudarles a contar las historias de todas esas personas detrás de cada
                 producto hecho a mano.
                 Cada compra en nuestra tienda crea oportunidades para usted, utilizando diversas técnicas tradicionales,
                 culturales e innovadoras para crear piezas hechas a mano que promueven el comercio justo, el consumo responsable
-                y la sostenibilidad.</h4>
+                y la sostenibilidad.</p>
 
             <div className="imgs">
                 <div className="artesanos">

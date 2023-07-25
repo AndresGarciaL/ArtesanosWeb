@@ -1,4 +1,3 @@
-//1.
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Breadcrumb from "../components/Breadcrumb";
@@ -7,30 +6,44 @@ import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import swal from 'sweetalert';
 
-//2.
 function Contacto() {
-    const mostrarAlerta=()=>{
-       swal({
-        title: "Formulario enviado con Éxito",
-        text: "¡Gracias por enviar tus respuestas!",
-        icon:"success",
-        button: "Aceptar",
-        timer: 5000
-       }); 
+    const mostrarAlerta = (title, text, icon) => {
+        swal({
+            title: title,
+            text: text,
+            icon: icon,
+            button: "Aceptar",
+            timer: 5000
+        });
     }
 
     const form = useRef();
-  
+
     const sendEmail = (e) => {
-      e.preventDefault();
-      emailjs.sendForm('service_3xoinli', 'template_56do7f8', form.current, 'Rcwj3Ye9qbysWFOAd')
-      .then((result) => {
-        console.log(result.text);
-      }, (error) => {
-        console.log(error.text);
-      });
+        e.preventDefault();
+        const formData = new FormData(form.current);
+
+        // Check if any of the form fields is empty
+        let hasEmptyField = false;
+        formData.forEach((value) => {
+            if (value.trim() === "") {
+                hasEmptyField = true;
+            }
+        });
+
+        if (hasEmptyField) {
+            mostrarAlerta("Error", "Por favor, rellene todos los campos del formulario.", "error");
+            return;
+        }
+
+        emailjs.sendForm('service_3xoinli', 'template_56do7f8', form.current, 'Rcwj3Ye9qbysWFOAd')
+            .then((result) => {
+                console.log(result.text);
+                mostrarAlerta("Formulario enviado con Éxito", "¡Gracias por enviar tus respuestas!", "success");
+            }, (error) => {
+                console.log(error.text);
+            });
     };
-  //3.
   return (
     <>
       <Header />
@@ -64,11 +77,11 @@ function Contacto() {
           <h2 className="tituloh2">¡Queremos saber de usted!</h2>
           <div className="formulario">
             <form className="formContacto" ref={form} onSubmit={sendEmail}>
-              <label className="labelContacto">Name</label>
+              <label className="labelContacto">Nombre</label>
               <input className="inputContacto" type="text" name="user_name" require/>
-              <label className="labelContacto">Email</label>
+              <label className="labelContacto">Correo electrónico</label>
               <input className="inputContacto" type="email" name="user_email" require />
-              <label className="labelContacto" require>Message</label>
+              <label className="labelContacto" require>Mensaje</label>
               <textarea name="message" cols="30" rows="10" />
               <div className="submit-btn">
               <input className="botonEnviar" onClick={()=>mostrarAlerta()} type="submit" value="Send" />
