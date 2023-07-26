@@ -16,14 +16,9 @@ function Conocenos() {
             <div class="left">
                 <img id="img-conocenos" src={require("../images/img-contacto/conocenos.png")} alt="Imagen Conócenos" />
                 <div class="parrafos">
-                    <p class="parrafo1">Artesanos Web es un sitio web que apoya y promueve la artesanía. Es un espacio donde
-                        difundimos los productos
-                        e
-                        historias de artesanos, artistas y diseñadores.</p>
-                    <h3 class="preguntas">¿Por qué hecho a mano?</h3>
-                    <p class="parrafo1">Entendemos cómo, dónde y quién hace lo que compramos; es una parte esencial de ser un
-                        consumidor responsable.
-                        Además, comprar a un artesano impulsa la economía local y como consumidor, conoces específicamente a aquellos
+                    <p class="parrafo1">Somos un sitio web que apoya y promueve la artesanía, un espacio donde difundimos los productos e historias de artesanos, artistas y diseñadores.</p>
+                    <p class="parrafo1">Entendemos cómo, dónde y quién hace lo que compramos.
+                        Además, al comprar a un artesano impulsa la economía local y como consumidor, conoces específicamente a aquellos
                         que se benefician de esta compra.</p>
                 </div>
             </div>

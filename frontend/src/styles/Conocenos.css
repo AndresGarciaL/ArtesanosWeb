@@ -8,24 +8,24 @@ h3 {
     text-align: center;
     padding-top: 3%;
     padding-bottom: 1%;
+    font-size: xx-large;
 }
 
 .left {
     display: flex;
     align-items: center;
     margin-bottom: 0% !important;
+    padding-bottom: 5%;
 }
 
 .parrafos {
-    display: block;
-    text-align: justify;
-    margin-right: 20%;
-    margin-left: 3%;
+    display: block !important;
 }
 
 .parrafo1 {
     margin-top: 5% !important;
     margin-bottom: 7% !important;
+    text-align: left !important;
 }
 
 #parrafo4 {
@@ -33,7 +33,6 @@ h3 {
 }
 
 #img-conocenos {
-    width: 15;
     max-height: 400px !important;
     margin-left: 20%;
     border-radius: 5%;

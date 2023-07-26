@@ -189,7 +189,6 @@ input[type=submit] {
 }
 
 #correo {
-    display: flex;
     justify-content: center;
 }
 

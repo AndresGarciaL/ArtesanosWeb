@@ -104,13 +104,13 @@ function Carrito() {
           <div className="resumen-carrito">
             {carrito.map((item) => (
               <div key={item.id} className="item-resumen">
-                <span className="item-title">🟢 {item.nombre}</span>
-                <span className="item">Cantidad: {item.cantidad}</span>
+                <span className="item-title">🟢{item.nombre} #️⃣{item.cantidad}</span>
+                <span className="item"></span>
                 <span className="item">
-                  Precio por unidad: ${item.precio.toFixed(2)}
+                Unidad: 🔖{item.precio.toFixed(2)}
                 </span>
                 <span className="item">
-                  Subtotal: ${(item.precio * item.cantidad).toFixed(2)}
+                  Subtotal: 💲{(item.precio * item.cantidad).toFixed(2)}
                 </span>
               </div>
             ))}
