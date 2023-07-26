@@ -162,9 +162,7 @@ function Usuarios_Dash() {
               <table className="table-users">
                 <thead>
                   <tr>
-                    <th className="center">
-                      <h4>ID</h4>
-                    </th>
+                    
                     <th className="center">
                       <h4>Nombre</h4>
                     </th>
@@ -188,9 +186,7 @@ function Usuarios_Dash() {
                 <tbody>
                   {usuarios.map((usuario) => (
                     <tr key={usuario.id}>
-                      <td className="center">
-                        <h5>{usuario.id}</h5>
-                      </td>
+                      
                       <td className="center">
                         {editingUserId === usuario.id ? (
                           <input

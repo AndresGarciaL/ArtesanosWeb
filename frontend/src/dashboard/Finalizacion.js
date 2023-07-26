@@ -93,7 +93,7 @@ function Finalizacion() {
           <table style={{ border: "1px solid black", padding: "8px" }}>
             <thead>
               <tr>
-                <th style={{ border: "1px solid black", padding: "8px" }}>ID</th>
+                
                 <th style={{ border: "1px solid black", padding: "8px" }}>Nombre</th>
                 <th style={{ border: "1px solid black", padding: "8px" }}>Descripción</th>
                 <th style={{ border: "1px solid black", padding: "8px" }}>Cantidad</th>
@@ -103,7 +103,7 @@ function Finalizacion() {
             <tbody>
               {cartItems.map((item) => (
                 <tr key={item.id}>
-                  <td style={{ border: "1px solid black", padding: "8px" }}>{item.id}</td>
+                  
                   <td style={{ border: "1px solid black", padding: "8px" }}>{item.nombre}</td>
                   <td style={{ border: "1px solid black", padding: "8px" }}>{item.descripcion}</td>
                   <td style={{ border: "1px solid black", padding: "8px" }}>{item.cantidad}</td>
