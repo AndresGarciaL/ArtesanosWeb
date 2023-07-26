@@ -39,7 +39,7 @@ function Pedidos_Dash() {
         <table style="width: 100%; border-collapse: collapse;">
           <thead>
             <tr>
-              <th style="border: 1px solid black; padding: 8px; text-align: left; margin-bottom: 10px;">ID del Pedido</th>
+              
               <th style="border: 1px solid black; padding: 8px; text-align: left; margin-bottom: 10px;">Nombre del Producto</th>
               <th style="border: 1px solid black; padding: 8px; text-align: left; margin-bottom: 10px;">Cantidad</th>
               <th style="border: 1px solid black; padding: 8px; text-align: left; margin-bottom: 10px;">Costo Unitario</th>
@@ -48,7 +48,7 @@ function Pedidos_Dash() {
           <tbody>
             ${pedidoDetalle.detalles.map((detalle) => `
               <tr key=${detalle.detalle_id}>
-                <td style="border: 1px solid black; padding: 8px;">${pedidoDetalle.pedido_id}</td>
+                
                 <td style="border: 1px solid black; padding: 8px;">${detalle.producto.nombre}</td>
                 <td style="border: 1px solid black; padding: 8px;">${detalle.cantidad}</td>
                 <td style="border: 1px solid black; padding: 8px;">${detalle.precio_unitario}</td>
@@ -118,7 +118,7 @@ function Pedidos_Dash() {
                 <thead>
                   <tr>
                     <th className="center">
-                      <h4>ID</h4>
+                      <h4>Usuario</h4>
                     </th>
                     <th className="center">
                       <h4>Fecha de Pedido</h4>
@@ -138,7 +138,7 @@ function Pedidos_Dash() {
                   {pedidos.map((pedido) => (
                     <tr key={pedido.id}>
                       <td className="center">
-                        <h5>{pedido.id}</h5>
+                        <h5>{pedido.nombre_usuario}</h5>
                       </td>
                       <td className="center">
                         <h5>{pedido.fecha_pedido}</h5>

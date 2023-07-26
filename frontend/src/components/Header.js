@@ -44,9 +44,7 @@ function Header() {
         </ul>
 
         <div className="container-icons">
-          <Link to="/">
-            <img src={require("../images/icons/corazon.png")} alt="" />
-          </Link>
+          
           <Link to="/Carrito">
             <div className="carrito-icon">
               <img

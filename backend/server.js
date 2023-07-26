@@ -355,7 +355,7 @@ app.put('/editusuario/:id', (req, res) => {
 
 // Register
 app.post('/registrar', (req, res) => {
-  const { nombre,apellidos, email, contrasena } = req.body;
+  const { nombre, apellidos, email, contrasena } = req.body;
 
   // Generar el hash de la contraseña
   bcrypt.hash(contrasena, 10, (error, hash) => {
@@ -364,7 +364,7 @@ app.post('/registrar', (req, res) => {
       res.status(500).json({ Estatus: 'ERROR', Error: 'Error al registrar usuario' });
     } else {
       const sql = 'INSERT INTO usuarios (nombre,apellidos, email, contrasena,rol_id, estatus) VALUES (?,?,?,?,2,1)';
-      connection.query(sql, [nombre,apellidos, email, hash], (error, resultado) => {
+      connection.query(sql, [nombre, apellidos, email, hash], (error, resultado) => {
         if (error) {
           console.log('Error al registrar usuario', error);
           res.status(500).json({ Estatus: 'ERROR', Error: 'Error al registrar usuario' });
@@ -376,71 +376,71 @@ app.post('/registrar', (req, res) => {
   });
 });
 
-  //* LOGIN
-  app.post("/login", (peticion, respuesta) => {
-    const { email, contrasena } = peticion.body;
-    const query = "SELECT contrasena FROM usuarios WHERE email = ?";
-    connection.query(query, [email], (error, resultados) => {
-      if (error) return respuesta.json({ Error: "Error en la consulta." });
-      if (resultados.length === 0) return respuesta.json({ Error: "Error en la consulta" });
-      const usuario = resultados[0];
-      const match = bcrypt.compareSync(contrasena, usuario.contrasena);
-      if (match) {
-        const token = jwt.sign({ email: email }, "secreto"); // Corrige el campo aquí
-        return respuesta.json({ Estatus: "CORRECTO", Resultado: usuario, token });
-      } else {
-        return respuesta.json({ Error: "Error en las credenciales del usuario" });
-      }
-    });
-  });
-  
-  app.post("/VerificarCorreo", (peticion, respuesta) => {
-    const { email } = peticion.body;
-    const query = "SELECT * FROM usuarios WHERE email = ?";
-    connection.query(query, [email], (error, resultados) => {
-      if (error) {
-        return respuesta.json({ Error: "Error en la consulta" });
-      } else {
-        if (resultados.length > 0) {
-          return respuesta.json({ Estatus: "Correcto", Resultado: resultados });
-        } else {
-          return respuesta.json({ Error: "El usuario no existe" });
-        }
-      }
-    });
-  });
-  
-  // Autenticar
-  const autenticarUsuario = (peticion, respuesta, siguiente) => {
-    const token = peticion.header("Authorization");
-    if (!token) {
-      return respuesta.status(401).json({ Error: "Acceso no autorizado" });
+//* LOGIN
+app.post("/login", (peticion, respuesta) => {
+  const { email, contrasena } = peticion.body;
+  const query = "SELECT contrasena FROM usuarios WHERE email = ?";
+  connection.query(query, [email], (error, resultados) => {
+    if (error) return respuesta.json({ Error: "Error en la consulta." });
+    if (resultados.length === 0) return respuesta.json({ Error: "Error en la consulta" });
+    const usuario = resultados[0];
+    const match = bcrypt.compareSync(contrasena, usuario.contrasena);
+    if (match) {
+      const token = jwt.sign({ email: email }, "secreto"); // Corrige el campo aquí
+      return respuesta.json({ Estatus: "CORRECTO", Resultado: usuario, token });
+    } else {
+      return respuesta.json({ Error: "Error en las credenciales del usuario" });
     }
-    try {
-      const decoded = jwt.verify(token, "secreto"); // Asegúrate de que "secreto" coincida con la clave usada para firmar el token
-      peticion.user = decoded;
-      siguiente();
-    } catch (error) {
-      return respuesta.status(401).json({ Error: "Acceso no autorizado" });
-    }
-  };
+  });
+});
 
-  app.get("/UsuarioActual", autenticarUsuario, (peticion, respuesta) => {
-    const { email } = peticion.user;
-    const query = "SELECT * FROM usuarios WHERE email = ?";
-    connection.query(query, [email], (error, resultados) => {
-      if (error) {
-        return respuesta.status(500).json({ Error: "Error en la consulta" });
+app.post("/VerificarCorreo", (peticion, respuesta) => {
+  const { email } = peticion.body;
+  const query = "SELECT * FROM usuarios WHERE email = ?";
+  connection.query(query, [email], (error, resultados) => {
+    if (error) {
+      return respuesta.json({ Error: "Error en la consulta" });
+    } else {
+      if (resultados.length > 0) {
+        return respuesta.json({ Estatus: "Correcto", Resultado: resultados });
       } else {
-        if (resultados.length > 0) {
-          const usuario = resultados[0];
-          return respuesta.json({ Estatus: "CORRECTO", Resultado: usuario });
-        } else {
-          return respuesta.status(404).json({ Error: "Usuario no encontrado" });
-        }
+        return respuesta.json({ Error: "El usuario no existe" });
       }
-    });
+    }
   });
+});
+
+// Autenticar
+const autenticarUsuario = (peticion, respuesta, siguiente) => {
+  const token = peticion.header("Authorization");
+  if (!token) {
+    return respuesta.status(401).json({ Error: "Acceso no autorizado" });
+  }
+  try {
+    const decoded = jwt.verify(token, "secreto"); // Asegúrate de que "secreto" coincida con la clave usada para firmar el token
+    peticion.user = decoded;
+    siguiente();
+  } catch (error) {
+    return respuesta.status(401).json({ Error: "Acceso no autorizado" });
+  }
+};
+
+app.get("/UsuarioActual", autenticarUsuario, (peticion, respuesta) => {
+  const { email } = peticion.user;
+  const query = "SELECT * FROM usuarios WHERE email = ?";
+  connection.query(query, [email], (error, resultados) => {
+    if (error) {
+      return respuesta.status(500).json({ Error: "Error en la consulta" });
+    } else {
+      if (resultados.length > 0) {
+        const usuario = resultados[0];
+        return respuesta.json({ Estatus: "CORRECTO", Resultado: usuario });
+      } else {
+        return respuesta.status(404).json({ Error: "Usuario no encontrado" });
+      }
+    }
+  });
+});
 
 
 // Ruta para agregar un nuevo pedido
@@ -476,9 +476,13 @@ app.post('/nuevopedido', (req, res) => {
 
 
 
-  // Ruta para obtener todos los pedidos
+// Ruta para obtener todos los pedidos
 app.get('/pedidos', (req, res) => {
-  const query = 'SELECT * FROM pedidos';
+  const query = `
+    SELECT pedidos.id, usuarios.nombre AS nombre_usuario, pedidos.fecha_pedido, pedidos.estado, pedidos.total
+    FROM pedidos
+    JOIN usuarios ON pedidos.usuario_id = usuarios.id
+  `;
 
   connection.query(query, (err, results) => {
     if (err) {

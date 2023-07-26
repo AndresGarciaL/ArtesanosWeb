@@ -32,6 +32,7 @@ function Agregar_Categoria() {
     axios
       .post("http://localhost:8081/addcategorias", { nombre })
       .then((response) => {
+        mostrarAlerta('Éxito', 'Se agregó la categoria correctamente.', 'success', 3000);
         console.log("Categoría agregada correctamente");
         navegacion("/Dashboard/Categorias"); // Redirigir
         setNombre(""); // Limpiar el campo de entrada

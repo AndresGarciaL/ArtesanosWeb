@@ -71,7 +71,7 @@ function Carrito() {
   // Function to initiate the PayPal payment
   const iniciarPagoPayPal = () => {
     const totalAmount = calcularPrecioTotal();
-    const currency = "USD"; // Set the currency according to your requirement
+    const currency = "MXN"; // Set the currency according to your requirement
     const description = "Compra en MiTienda"; // Set the description as needed
 
     // Make a POST request to your server to initiate the PayPal payment
@@ -95,7 +95,6 @@ function Carrito() {
     <>
       <Header />
       <Breadcrumb currentPage="Carrito" />
-
       <section className="section-carrito">
         <div className="detalle-carrito">
           <div className="titulo-resumen-carrito">
@@ -116,7 +115,7 @@ function Carrito() {
             ))}
             <div className="total-carrito">
               <span className="item-title-total">Total: </span>
-              <span className="item-title-total">${calcularPrecioTotal()}</span>
+              <span className="item-title-total">${calcularPrecioTotal()} MXN</span>
             </div>
             <button className="button-compra" onClick={iniciarPagoPayPal}>
               Continuar compra
@@ -146,12 +145,7 @@ function Carrito() {
                         Eliminar
                       </button>
                     </div>
-                    <div className="btn--carrito">
-                      <a href="#">Comprar ahora</a>
-                    </div>
-                    <div className="btn--carrito">
-                      <a href="#">Guardar</a>
-                    </div>
+                    
                   </div>
                 </div>
               </div>

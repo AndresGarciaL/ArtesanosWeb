@@ -116,7 +116,7 @@ function Finalizacion() {
 
         {/* Display the total payment */}
         <div className="compra-recibida">
-          <h3>Pagaste en Total: ${totalPayment}</h3>
+          <h3>Pagaste en Total: ${totalPayment} MXN</h3>
         </div>
       </main>
 
